@@ -17,12 +17,14 @@ import { BlogCard } from "@/components/blog/BlogCard";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { mockBlogs, mockUsers, currentUser } from "@/data/mockData";
+import { mockBlogs, mockUsers } from "@/data/mockData";
+import { useUser } from "@/context/UserContext";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 
 export default function Profile() {
   const { userId } = useParams();
+  const { user: currentUser } = useUser();
   const [isFollowing, setIsFollowing] = useState(false);
 
   // Find user - if no userId or "current", show current user
@@ -30,7 +32,7 @@ export default function Profile() {
     ? currentUser 
     : mockUsers.find((u) => u.id === userId) || currentUser;
 
-  const isOwnProfile = user.id === currentUser.id;
+  const isOwnProfile = user?.id === currentUser?.id;
 
   // Filter blogs for this user
   const userBlogs = mockBlogs.filter((blog) => blog.authorId === user.id);
